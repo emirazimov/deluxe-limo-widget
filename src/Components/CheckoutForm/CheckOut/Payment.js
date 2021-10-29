@@ -65,10 +65,10 @@ const useStyles = makeStyles((theme) => ({
   inputRootAutocompleteCardNumber: {
     height: "40px",
     background: "#282828",
-    borderRadius: "10px",
+
     color: "white",
     boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
-    borderRadius: "0",
+    borderRadius: "5px",
     "&::placeholder": {
       color: "white",
       opacity: "1",
@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   noBorder: {
+    border: "1px solid transparent",
     border: "none",
     "&::placeholder": {
       color: "white",
@@ -120,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#282828",
     border: "1px solid transparent",
     color: "white",
+    borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#4F4F4F",
       // color: "black",
@@ -129,6 +131,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#282828",
     border: "1px solid transparent",
     color: "white",
+    borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#4F4F4F",
       // color: "black",
@@ -136,21 +139,23 @@ const useStyles = makeStyles((theme) => ({
   },
   option: {
     backgroundColor: "black",
+
     "&:hover": {
-      backgroundColor: "#C6AD99",
+      backgroundColor: "#4F4F4F",
     },
     "&$selected": {
-      backgroundColor: "#C6AD99",
+      backgroundColor: "#4F4F4F",
     },
   },
   selectedOption: {
-    backgroundColor: "#C6AD99",
+    backgroundColor: "#4F4F4F",
     "&$selected": {
-      backgroundColor: "#C6AD99",
+      backgroundColor: "#4F4F4F",
     },
   },
   input: {
     // height: "40px",
+
     "&:-webkit-autofill": {
       height: "0px",
       border: "none",
@@ -161,6 +166,14 @@ const useStyles = makeStyles((theme) => ({
     "MuiOutlinediput-input:-webkit-autofill": {
       WebkitTextFillColor: "white",
     },
+  },
+  mainAutocompleteClass: {
+    "& .MuiAutocomplete-inputRoot": {
+      borderRadius: "5px",
+    },
+  },
+  paymentTexts: {
+    color: "white",
   },
 }))
 
@@ -300,10 +313,11 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                 style={{
                   fontFamily: "Roboto",
                   fontWeight: 500,
-                  color: "white",
+                  // color: "white",
                   fontSize: "22px",
                   lineHeight: "36px",
                 }}
+                className={classes.paymentTexts}
               >
                 Payment
               </Typography>
@@ -323,7 +337,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                       color: riderDetails ? "white" : "#757575",
                       fontSize: "15px",
                     }}
-
+                    className={classes.paymentTexts}
                     // style={{}}
                   >
                     Is passenger a cardholder?
@@ -341,7 +355,10 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
             {!riderDetails && (
               <Grid item style={{ paddingBottom: "20px" }}>
                 <Grid item style={{ paddingBottom: "13px" }}>
-                  <Typography style={{ color: "white", fontSize: "15px" }}>
+                  <Typography
+                    style={{ fontSize: "15px" }}
+                    className={classes.paymentTexts}
+                  >
                     Passenger Detail
                   </Typography>
                 </Grid>
@@ -414,7 +431,10 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
             )}
             <Grid item>
               <Grid item style={{ paddingBottom: "13px" }}>
-                <Typography style={{ color: "white", fontSize: "15px" }}>
+                <Typography
+                  style={{ fontSize: "15px" }}
+                  className={classes.paymentTexts}
+                >
                   Cardholder Information
                 </Typography>
               </Grid>
@@ -528,6 +548,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                 defaultValue={null}
                 autoComplete="off"
                 autoHighlight
+                className={classes.mainAutocompleteClass}
                 InputProps={{
                   classes: {
                     root: classes.inputRootAutocomplete2,
@@ -587,6 +608,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     defaultValue={null}
                     autoHighlight
                     getOptionLabel={(option) => option.name}
+                    className={classes.mainAutocompleteClass}
                     classes={{
                       popupIndicator: classes.popupIndicator,
                       option: classes.option,
@@ -642,7 +664,10 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
               </Grid>
             </Grid>
             <Grid item>
-              <Typography style={{ fontSize: "15px", color: "black" }}>
+              <Typography
+                style={{ fontSize: "15px" }}
+                className={classes.paymentTexts}
+              >
                 Card information
               </Typography>
             </Grid>
@@ -796,7 +821,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     className={classes.backButtonSelf}
                     style={{
                       height: "50px",
-                      borderRadius: "0",
+
                       textTransform: "none",
                     }}
                   >
@@ -812,7 +837,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     className={classes.payButtonSelf}
                     style={{
                       height: "50px",
-                      borderRadius: "0",
+
                       textTransform: "none",
                     }}
                     disabled={!checked}

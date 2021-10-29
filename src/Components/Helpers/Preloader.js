@@ -1,11 +1,11 @@
-import { CircularProgress, LinearProgress } from "@material-ui/core"
+import { CircularProgress } from "@material-ui/core"
 import React from "react"
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles"
 
 const theme = createMuiTheme({
   palette: {
     secondary: {
-      main: "#C6AD99",
+      main: "#4F4F4F",
     },
   },
 })

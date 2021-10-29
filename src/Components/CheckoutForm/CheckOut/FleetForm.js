@@ -88,19 +88,20 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   listRoot: {
+    opacity: "0.5",
     "&:hover": {
       // backgroundColor: "#C6AD99",
-      opacity: "0.5",
+      opacity: "1",
     },
   },
 
   active: {
     "&.Mui-selected": {
       // backgroundColor: "#C6AD99",
-      opacity: "0.5",
+      opacity: "1",
     },
     "&.Mui-selected:hover": {
-      opacity: "0.5",
+      opacity: "1",
       // backgroundColor: "#C6AD99",
     },
   },
@@ -138,7 +139,7 @@ const FleetForm = React.memo(
     setCarId,
     gateMeeting,
     setGateMeetingRedux,
-    hourlyRedux,
+    hourlyAndSeatsRedux,
   }) => {
     const classes = useStyles()
     const [carCard, setCarCard] = React.useState(0)
@@ -174,7 +175,7 @@ const FleetForm = React.memo(
     }
     const isMobile = useMediaQuery("(max-width:500px)")
     const isiPad = useMediaQuery("(max-width:1024px)")
-    console.log(hourlyRedux)
+    // console.log(hourlyRedux)
     return (
       <>
         {isFetching ? (
@@ -741,7 +742,7 @@ const mapStateToProps = (state) => {
     cars: state.cars.cars,
     isFetching: state.cars.isFetching,
     gateMeeting: state.gateMeeting.isGateMeeting,
-    hourlyRedux: state.hourlyRedux.hourlyRedux,
+    hourlyAndSeatsRedux: state.hourlyAndSeatsRedux.hourlyRedux,
   }
 }
 

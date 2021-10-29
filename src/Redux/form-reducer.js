@@ -1,70 +1,74 @@
-import { formApi } from '../api/api'
-import { toggleIsFetching } from './car-reducer'
-import { failMessage, isSuccess } from './company-profile-reducer'
+import { formApi } from "../api/api"
+import { toggleIsFetching } from "./car-reducer"
+import { failMessage, isSuccess } from "./company-profile-reducer"
 
-export const SET_FORM_DATA = './form-reducer/SET_FORM_DATA'
-const SET_NOTE = './form-reducer/SET_NOTE'
-const LOGOUT = './form-reducer/LOGOUT'
-const SET_CAR_ID = './form-reducer/SET_CAR_ID'
-const SET_ORDER_SUM = './form-reducer/SET_ORDER_SUM'
-const SET_PAYMENT_FORM = './form-reducer/SET_PAYMENT_FORM'
+export const SET_FORM_DATA = "./form-reducer/SET_FORM_DATA"
+const SET_NOTE = "./form-reducer/SET_NOTE"
+const LOGOUT = "./form-reducer/LOGOUT"
+const SET_CAR_ID = "./form-reducer/SET_CAR_ID"
+const SET_ORDER_SUM = "./form-reducer/SET_ORDER_SUM"
+const SET_PAYMENT_FORM = "./form-reducer/SET_PAYMENT_FORM"
+const SET_SAFETY_SEAT_COUNT = "./form-reducer/SET_SAFETY_SEAT_COUNT"
+const SET_BOOSTER_SEAT_COUNT = "./form-reducer/SET_SAFETY_SEAT_COUNT"
 
 let initialState = {
   orderType: 3,
   bookingType: 0,
   orderSum: 0,
-  orderStartDateTime: '',
+  orderStartDateTime: "",
   passengersQuantity: 0,
   carInfo: {
     id: 0,
   },
   orderAddressDetails: [
     {
-      rideCheckPoint: '',
+      rideCheckPoint: "",
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: '',
+      placeId: "",
     },
     {
-      rideCheckPoint: '',
+      rideCheckPoint: "",
       latitude: 0,
       longitude: 0,
       placeType: 0,
-      placeId: '',
+      placeId: "",
     },
   ],
-  orderNotes: '',
+  orderNotes: "",
   hours: 0,
   paymentInfo: {
-    cardNumber: '',
+    cardNumber: "",
     month: null,
     year: null,
-    cvc: '',
+    cvc: "",
     amount: 0,
   },
   client: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    zip: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+    zip: "",
     cityId: 0,
     stateId: 0,
   },
   greetClientInfo: {
     id: 0,
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
   },
   isAirportPickupIncluded: false,
-  flightNumber: '',
+  flightNumber: "",
   airlines: {
     id: 0,
   },
+  safetySeatCount: 0,
+  boosterSeatCount: 0,
 }
 
 const formReducer = (state = initialState, action) => {
@@ -94,55 +98,55 @@ const formReducer = (state = initialState, action) => {
         orderType: 3,
         bookingType: 0,
         orderSum: 0,
-        orderStartDateTime: '',
+        orderStartDateTime: "",
         passengersQuantity: 0,
         carInfo: {
           id: 0,
         },
         orderAddressDetails: [
           {
-            rideCheckPoint: '',
+            rideCheckPoint: "",
             latitude: 0,
             longitude: 0,
             placeType: 0,
-            placeId: '',
+            placeId: "",
           },
           {
-            rideCheckPoint: '',
+            rideCheckPoint: "",
             latitude: 0,
             longitude: 0,
             placeType: 0,
-            placeId: '',
+            placeId: "",
           },
         ],
-        orderNotes: '',
+        orderNotes: "",
         hours: 0,
         paymentInfo: {
-          cardNumber: '',
+          cardNumber: "",
           month: null,
           year: null,
-          cvc: '',
+          cvc: "",
           amount: 0,
         },
         client: {
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
-          address: '',
-          zip: '',
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          address: "",
+          zip: "",
           cityId: 0,
           stateId: 0,
         },
         greetClientInfo: {
           id: 0,
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
         },
         isAirportPickupIncluded: false,
-        flightNumber: '',
+        flightNumber: "",
         airlines: {
           id: 0,
         },
@@ -161,6 +165,17 @@ const formReducer = (state = initialState, action) => {
           cityId: action.cityId,
           stateId: action.stateId,
         },
+      }
+    case SET_SAFETY_SEAT_COUNT:
+      return {
+        ...state,
+        safetySeatCount: action.payload,
+      }
+
+    case SET_BOOSTER_SEAT_COUNT:
+      return {
+        ...state,
+        boosterSeatCount: action.payload,
       }
     default:
       return state
@@ -183,6 +198,15 @@ export const setPaymentForm = (form, cityId, stateId, date) => ({
   cityId,
   stateId,
   date,
+})
+
+export const setSafetySeatCount = (count) => ({
+  type: SET_SAFETY_SEAT_COUNT,
+  payload: count,
+})
+export const setBoosterSeatCount = (count) => ({
+  type: SET_BOOSTER_SEAT_COUNT,
+  payload: count,
 })
 
 export const createReservation = (formSummary) => {

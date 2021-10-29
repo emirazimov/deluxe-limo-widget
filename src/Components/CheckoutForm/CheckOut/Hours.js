@@ -1,8 +1,9 @@
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import React, { useState } from "react"
+import React from "react"
 import { useFormContext } from "react-hook-form"
 import { HourlyIcon, MinusIcon, PlusIcon } from "../../../assets/icons"
+import "./index.css"
 
 const Hours = ({
   hoursState,
@@ -65,6 +66,7 @@ const Hours = ({
             <input
               ref={register}
               name="hours"
+              className="passenger"
               onChange={(e) => {
                 setHoursAddressForm(e.target.value)
               }}
@@ -73,6 +75,7 @@ const Hours = ({
               style={{
                 // pointerEvents: "none",
                 minWidth: "30px",
+                maxWidth: "30px",
                 marginRight: "3px",
                 marginBottom: "4px",
                 backgroundColor: "transparent",
@@ -84,6 +87,7 @@ const Hours = ({
                 fontWeight: "400",
                 fontSize: "14px",
               }}
+              type="number"
             />
           </Grid>
           <Grid item>

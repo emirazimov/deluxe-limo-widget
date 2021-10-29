@@ -1,14 +1,15 @@
 import { useMediaQuery } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import React, { memo, useState } from "react"
+import React from "react"
 import { useFormContext } from "react-hook-form"
 import {
   MinusIcon,
-  NumberOfPassengers,
+  // NumberOfPassengers,
   NumberOfPassengersIcon,
   PlusIcon,
 } from "../../../assets/icons"
+import "./index.css"
 
 export default React.memo(function PassengerQuantity({
   passengersqState,
@@ -60,6 +61,12 @@ export default React.memo(function PassengerQuantity({
           direction="row"
           justify="space-around"
           alignItems="center"
+          // style={{
+          //   background: "#282828",
+          //   height: "35px",
+          //   borderRadius: "5px",
+          //   // paddingTop: "-4px",
+          // }}
         >
           <Grid item>
             <span
@@ -78,11 +85,13 @@ export default React.memo(function PassengerQuantity({
               onChange={(e) => {
                 setPassengers(e.target.value)
               }}
+              className="passenger"
               value={passengers}
               size="1"
               style={{
                 // pointerEvents: "none",
                 minWidth: "30px",
+                maxWidth: "30px",
                 marginRight: "3px",
                 marginBottom: "4px",
                 backgroundColor: "transparent",
@@ -94,6 +103,7 @@ export default React.memo(function PassengerQuantity({
                 fontWeight: "400",
                 fontSize: "14px",
               }}
+              type="number"
             />
           </Grid>
           <Grid item>

@@ -1,19 +1,19 @@
 import { makeStyles } from "@material-ui/core"
 import TextField from "@material-ui/core/TextField"
-import Autocomplete from "@material-ui/lab/Autocomplete"
+// import Autocomplete from "@material-ui/lab/Autocomplete"
 import {
   DatePicker,
-  DateTimePicker,
+  // DateTimePicker,
   // TimePicker,
   // KeyboardTimePicker,
 } from "@material-ui/pickers"
 import "date-fns"
 import React from "react"
 import { Controller, useFormContext } from "react-hook-form"
-import InputMask from "react-input-mask"
+import ReactInputMask from "react-input-mask"
 import { PlacesAutocomplete } from "react-places-autocomplete"
-import { TimePicker } from "antd"
-import "antd/dist/antd.css"
+// import { TimePicker } from "antd"
+// import "antd/dist/antd.css"
 import "./index.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     "& input::placeholder": {
       color: "grey",
     },
-    borderRadius: "0",
+    borderRadius: "5px",
     boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
     color: "white",
     // "&:-webkit-autofill": {
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   noBorder: {
     border: "none",
+
     // "&:-webkit-autofill": {
     //   height: "0px",
     //   border: "none",
@@ -156,7 +157,7 @@ export const CustomMaskInput = ({
 
   return (
     <Controller
-      as={InputMask}
+      as={ReactInputMask}
       control={control}
       name={name}
       required={required}
@@ -205,20 +206,20 @@ export const DateInputControl = ({ name, required, ...props }) => {
     ></Controller>
   )
 }
-export const TimeInputControl = ({ name, required, ...props }) => {
-  const { control } = useFormContext()
+// export const TimeInputControl = ({ name, required, ...props }) => {
+//   const { control } = useFormContext()
 
-  return (
-    <Controller
-      as={TimePicker}
-      name={name}
-      required={required}
-      style={{ cursor: "pointer" }}
-      {...props}
-      control={control}
-    ></Controller>
-  )
-}
+//   return (
+//     <Controller
+//       as={TimePicker}
+//       name={name}
+//       required={required}
+//       style={{ cursor: "pointer" }}
+//       {...props}
+//       control={control}
+//     ></Controller>
+//   )
+// }
 
 export const TimeInputControlNewOne = ({
   defaultValue,

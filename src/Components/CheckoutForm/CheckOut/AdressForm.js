@@ -6,7 +6,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { makeStyles } from "@material-ui/core/styles"
 import Switch from "@material-ui/core/Switch"
 import Typography from "@material-ui/core/Typography"
-import { yupResolver } from "@hookform/resolvers/yup"
+// import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
@@ -17,9 +17,10 @@ import { placesApi } from "../../../api/api"
 import {
   ClockIcon,
   DateIcon,
-  ForwardArrowIcon,
+  // ForwardArrowIcon,
   HourlyIcon,
   LeftArrowForAdressForm,
+  NumberOfPassengersIcon,
   PlaneIcon,
   RightArrowForAdressForm,
   Ticket,
@@ -29,11 +30,11 @@ import GoogleMap from "../../GoogleMap/GoogleMap"
 import { getCompanyCars } from "./../../../Redux/car-reducer"
 import {
   CustomFormInput,
-  CustomMaskInput,
-  DataInputControl,
+  // CustomMaskInput,
+  // DataInputControl,
   DateInputControl,
-  TimeInputControl,
-  TimeInputControlNewOne,
+  // TimeInputControl,
+  // TimeInputControlNewOne,
 } from "./CustomFormInput"
 import Hours from "./Hours"
 import PassengerQuantity from "./PassengerQuantity"
@@ -41,19 +42,25 @@ import { withStyles } from "@material-ui/styles"
 // import Carousel, { Dots, slidesToShowPlugin } from '@brainhubeu/react-carousel';
 import Carousel, { consts } from "react-elastic-carousel"
 // import Carousel from "react-material-ui-carousel";
-import Tooltip from "@material-ui/core/Tooltip"
-import { setFormData } from "./../../../Redux/form-reducer"
+// import Tooltip from "@material-ui/core/Tooltip"
+import {
+  setBoosterSeatCount,
+  setFormData,
+  setSafetySeatCount,
+} from "./../../../Redux/form-reducer"
 // import "@brainhubeu/react-carousel/lib/style.css"
-import { createMuiTheme } from "@material-ui/core"
-import { ThemeProvider } from "@material-ui/styles"
-import Blue from "@material-ui/core/colors/blue"
-import lime from "@material-ui/core/colors/lime"
-import { Popover, TimePicker } from "antd"
-import "antd/dist/antd.css"
+// import { createMuiTheme } from "@material-ui/core"
+// import { ThemeProvider } from "@material-ui/styles"
+// import Blue from "@material-ui/core/colors/blue"
+// import lime from "@material-ui/core/colors/lime"
+// import { Popover, TimePicker } from "antd"
+// import "antd/dist/antd.css"
 import "./index.css"
 import { setHourlyRedux } from "../../../Redux/hourly-reducer"
 import { setGateMeetingRedux } from "../../../Redux/gate-meeting-reducer"
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab"
+import SafetySeat from "./SafetySeat"
+import ReactInputMask from "react-input-mask"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -200,6 +207,8 @@ const useStyles = makeStyles((theme) => ({
   inputDateTime: {
     height: "40px",
     fontSize: "14px",
+    background: "#282828",
+    borderRadius: "5px",
     "&-webkit-autofill": {
       "&-webkit-box-shadow": "0 0 0 1000px red inset",
     },
@@ -294,14 +303,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   rootToggleButton: {
-    color: "#F8D9C1",
-    borderRadius: "0px",
+    color: "white",
+    borderRadius: "5px",
     "&.MuiToggleButton-root.Mui-selected": {
-      background: "#F8D9C1",
+      background: "#f0f0f0",
       color: "black",
     },
     "&:hover": {
-      background: "#F8D9C1",
+      background: "#f0f0f0",
       color: "black",
     },
   },
@@ -371,7 +380,9 @@ const AdressFormwithoutReactMemo = ({
   setHourlyRedux,
   setGateMeetingRedux,
   gateMeeting,
-  hourlyRedux,
+  hourlyAndSeatsRedux,
+  setSafetySeatCount,
+  setBoosterSeatCount,
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
   resetInputs,
@@ -399,6 +410,16 @@ const AdressFormwithoutReactMemo = ({
   const [redBorderOnSubmitForDate, setRedBorderOnSubmitForDate] =
     useState(false)
   const [redBorderOnSubmitForTime, setRedBorderOnSubmitForTime] =
+    useState(false)
+  const [redBorderOnSubmitForTime2, setRedBorderOnSubmitForTime2] =
+    useState(false)
+  const [redBorderOnSubmitForTime3, setRedBorderOnSubmitForTime3] =
+    useState(false)
+  const [redBorderOnSubmitForTime4, setRedBorderOnSubmitForTime4] =
+    useState(false)
+  const [redBorderOnSubmitForTime5, setRedBorderOnSubmitForTime5] =
+    useState(false)
+  const [redBorderOnSubmitForTime6, setRedBorderOnSubmitForTime6] =
     useState(false)
   const [redBorderOnSubmitForCarType, setRedBorderOnSubmitForCarType] =
     useState(false)
@@ -463,13 +484,18 @@ const AdressFormwithoutReactMemo = ({
         bookingType: bookingType,
         passengersQuantity: passengers,
         isAirportPickupIncluded: isAirportPickupIncludedLocalState,
+        boosterSeatCount: boosterSeat,
       })
-
+      setSafetySeatCount(childSafetySeat)
+      setBoosterSeatCount(boosterSeat)
+      console.log(childSafetySeat, boosterSeat)
       const forRes = data.orderStartDate.toLocaleDateString("en-US")
-      const forRes2 = data.orderStartTime._d.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-      })
+      const forRes2 = time + ` ${AMPM}`
+
+      // ._d.toLocaleTimeString("en-US", {
+      //   hour: "numeric",
+      //   minute: "numeric",
+      // })
 
       // + ` ${AMPM}`
       const resData = {
@@ -497,6 +523,7 @@ const AdressFormwithoutReactMemo = ({
           typeId: carSelectionID,
           bookingType: bookingType,
           passengersQuantity: passengers,
+          boosterSeatCount: boosterSeat,
         }
       )
       next()
@@ -534,16 +561,28 @@ const AdressFormwithoutReactMemo = ({
     //   }
     // }
   }
+
   const onSubmit2 = (data) => {
+    console.log(
+      firstTimeHalf?.[0],
+      firstTimeHalf?.[1],
+      secondTimeHalf?.[0],
+      secondTimeHalf?.[1]
+    )
+    console.log(time)
     if (
       destinations[0].rideCheckPoint &&
       destinations[1].rideCheckPoint &&
       data.orderStartDate &&
-      data.orderStartTime &&
+      time &&
+      firstTimeHalf?.[0] >= "0" &&
+      firstTimeHalf?.[1] >= "0" &&
+      secondTimeHalf?.[0] >= "0" &&
+      secondTimeHalf?.[1] >= "0" &&
+      // false &&
       carSelectionID &&
-      passengers
-      // &&
-      // AMPM
+      passengers &&
+      AMPM
     ) {
       if (isAirline) {
         if (!airlineId) {
@@ -571,16 +610,56 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmitForDate(false)
       }
-      if (!data.orderStartTime) {
-        setRedBorderOnSubmitForTime(true)
-      } else {
-        setRedBorderOnSubmitForTime(false)
-      }
-      // if (!AMPM) {
+      // if (!time) {
       //   setRedBorderOnSubmitForTime(true)
       // } else {
       //   setRedBorderOnSubmitForTime(false)
       // }
+      if (
+        firstTimeHalf?.[0] <= "0" ||
+        firstTimeHalf?.[0] <= "" ||
+        firstTimeHalf?.[0] == undefined
+      ) {
+        setRedBorderOnSubmitForTime2(true)
+      } else {
+        setRedBorderOnSubmitForTime2(false)
+      }
+      if (
+        firstTimeHalf?.[1] <= "0" ||
+        firstTimeHalf?.[1] <= "" ||
+        firstTimeHalf?.[1] == undefined
+      ) {
+        setRedBorderOnSubmitForTime6(true)
+      } else {
+        setRedBorderOnSubmitForTime6(false)
+      }
+      if (secondTimeHalf2 <= "0" || secondTimeHalf2 <= "") {
+        setRedBorderOnSubmitForTime3(true)
+      } else {
+        setRedBorderOnSubmitForTime3(false)
+      }
+
+      if (secondTimeHalf?.[0] <= "0" || secondTimeHalf?.[0] <= "") {
+        setRedBorderOnSubmitForTime4(true)
+      } else {
+        setRedBorderOnSubmitForTime4(false)
+      }
+      if (
+        secondTimeHalf?.[1] <= "0" ||
+        secondTimeHalf?.[1] <= "" ||
+        secondTimeHalf?.[1] == undefined
+      ) {
+        setRedBorderOnSubmitForTime5(true)
+        console.log(secondTimeHalf?.[1] + "true")
+      } else {
+        setRedBorderOnSubmitForTime5(false)
+        console.log(secondTimeHalf?.[1] + "false")
+      }
+      if (!AMPM) {
+        setRedBorderOnSubmitForTime(true)
+      } else {
+        setRedBorderOnSubmitForTime(false)
+      }
       if (carSelectionID) {
         setRedBorderOnSubmitForCarType(false)
       } else {
@@ -659,6 +738,11 @@ const AdressFormwithoutReactMemo = ({
       </Button>
     )
   }
+  const [safetySeat, setSafetySeat] = useState(false)
+
+  const [boosterSeat, setBoosterSeat] = useState(0)
+  const [childSafetySeat, setChildSafetySeat] = useState(0)
+
   const [alignment, setAlignment] = React.useState("web")
   const [AMPM, setAMPM] = React.useState("")
 
@@ -675,8 +759,68 @@ const AdressFormwithoutReactMemo = ({
     WebkitBoxShadow: "0 0 0 1000px #282828 inset",
     height: "0px",
   }
-  console.log(hourlyRedux)
+  // console.log(hourlyRedux)
   const isMobile = useMediaQuery("(max-width:530px)")
+
+  const [time, setTime] = useState("")
+  const startsWithTwo = time[0] === "2"
+
+  const [timeMask, setTimeMask] = useState(false)
+
+  const handleInput = (event) => {
+    if (event.target.value == "0_:__") {
+      setTimeMask(true)
+    }
+    if (event.target.value == "1_:__") {
+      setTimeMask(false)
+    }
+    setTime(event.target.value)
+    // const emir = "00:10"
+    // console.log(event.target.value)
+    // console.log(time)
+    // console.log(regexp.test(emir))
+    console.log(
+      event.target.value.match(/\d+/),
+      event.target.value.substr(event.target.value.indexOf(":")).match(/\d+/)
+    )
+  }
+
+  var firstTimeHalf = time
+    .substr(0, time.indexOf(":"))
+    .match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalf = time
+    .substr(time.indexOf(":"))
+    .match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalf2 = time.substr(time.indexOf(":")).match(/\d+/)
+
+  const mask = [
+    /[0-2]/,
+    startsWithTwo ? /[0-3]/ : /[0-9]/,
+    ":",
+    /[0-5]/,
+    /[0-9]/,
+  ]
+
+  let formatChars = {
+    7: "[0-1]",
+    8: "[0-9]",
+    9: "[0-5]",
+    1: timeMask ? "[0-9]" : "[0-2]",
+    a: "[A-Za-z]",
+    "*": "[A-Za-z0-9]",
+  }
+  let formatChars2 = {
+    7: "[0-1]",
+    8: "[0-2]",
+    9: "[0-5]",
+    1: "[0-2]",
+    a: "[A-Za-z]",
+    "*": "[A-Za-z0-9]",
+  }
 
   return (
     <Grid item>
@@ -943,89 +1087,105 @@ const AdressFormwithoutReactMemo = ({
                         },
                       }}
                     >
-                      {/* <CustomMaskInput
+                      <ReactInputMask
                         name="orderStartTime"
-                        mask="99:99"
+                        mask="71:98"
                         autoComplete="off"
+                        maskChar="_"
+                        // alwaysShowMask={false}
+                        formatChars={formatChars}
+                        // mask={mask}
+                        onChange={(e) => handleInput(e)}
+                        // onChange={(e) => console.log("EMIR")}
+                        // value={time}
                       >
-                        {(inputProps) => (
-                          <TextField
-                            {...inputProps}
-                            variant="outlined"
-                            placeholder="hh:mm"
-                            autoComplete="off"
-                            fullWidth
-                            style={{ borderRadius: "0px" }}
-                            InputProps={{
-                              classes: {
-                                root: classes.inputDateTime,
-                                input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                                notchedOutline: redBorderOnSubmitForTime
-                                  ? classes.noBorderRed
-                                  : classes.noBorderDefault,
-                              },
-                              startAdornment: (
-                                <InputAdornment
-                                  position="start"
-                                  style={{
-                                    marginRight: "10px",
-                                    marginLeft: "-3px",
-                                  }}
-                                >
-                                  <ClockIcon />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <>
-                                  <ToggleButtonGroup
-                                    color="primary"
-                                    value={alignment}
-                                    exclusive
-                                    onChange={handleChangeAMPM}
+                        {(inputProps) => {
+                          return (
+                            <TextField
+                              {...inputProps}
+                              variant="outlined"
+                              placeholder="hh:mm"
+                              autoComplete="off"
+                              fullWidth
+                              // style={{ borderRadius: "5px" }}
+
+                              InputProps={{
+                                classes: {
+                                  root: classes.inputDateTime,
+                                  input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                  notchedOutline:
+                                    redBorderOnSubmitForTime ||
+                                    redBorderOnSubmitForTime2 ||
+                                    redBorderOnSubmitForTime3 ||
+                                    redBorderOnSubmitForTime4 ||
+                                    redBorderOnSubmitForTime5 ||
+                                    redBorderOnSubmitForTime6
+                                      ? classes.noBorderRed
+                                      : classes.noBorderDefault,
+                                },
+                                startAdornment: (
+                                  <InputAdornment
+                                    position="start"
                                     style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      marginRight: "-8px",
+                                      marginRight: "10px",
+                                      marginLeft: "-3px",
                                     }}
                                   >
-                                    <ToggleButton
-                                      value="AM"
-                                      className={classes.rootToggleButton}
+                                    <ClockIcon />
+                                  </InputAdornment>
+                                ),
+                                endAdornment: (
+                                  <>
+                                    <ToggleButtonGroup
+                                      color="primary"
+                                      value={alignment}
+                                      exclusive
+                                      onChange={handleChangeAMPM}
                                       style={{
-                                        width: "26px",
-                                        height: "20px",
-                                        fontSize: "13px",
-                                        paddingTop: "0px",
-                                        paddingBottom: "0px",
-                                      }}
-                                      onClick={(e) => {}}
-                                    >
-                                      AM
-                                    </ToggleButton>
-                                    <ToggleButton
-                                      value="PM"
-                                      className={classes.rootToggleButton}
-                                      style={{
-                                        width: "26px",
-                                        height: "20px",
-                                        marginLeft: "2px",
-                                        fontSize: "13px",
-                                        paddingTop: "0px",
-                                        paddingBottom: "0px",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        marginRight: "-8px",
                                       }}
                                     >
-                                      PM
-                                    </ToggleButton>
-                                  </ToggleButtonGroup>
-                                </>
-                              ),
-                            }}
-                          />
-                        )}
-                      </CustomMaskInput> */}
+                                      <ToggleButton
+                                        value="AM"
+                                        className={classes.rootToggleButton}
+                                        style={{
+                                          width: "26px",
+                                          height: "20px",
+                                          fontSize: "13px",
+                                          paddingTop: "0px",
+                                          paddingBottom: "0px",
+                                        }}
+                                        onClick={(e) => {}}
+                                      >
+                                        AM
+                                      </ToggleButton>
+                                      <ToggleButton
+                                        value="PM"
+                                        className={classes.rootToggleButton}
+                                        style={{
+                                          width: "26px",
+                                          height: "20px",
+                                          marginLeft: "2px",
+                                          fontSize: "13px",
+                                          paddingTop: "0px",
+                                          paddingBottom: "0px",
+                                        }}
+                                      >
+                                        PM
+                                      </ToggleButton>
+                                    </ToggleButtonGroup>
+                                  </>
+                                ),
+                              }}
+                            />
+                          )
+                        }}
+                      </ReactInputMask>
 
-                      <div
+                      {/* <div
                         style={{
                           position: "absolute",
                           marginTop: "10px",
@@ -1071,7 +1231,7 @@ const AdressFormwithoutReactMemo = ({
                             borderRadius: "5px",
                           }}
                         ></TimeInputControl>
-                      </div>
+                      </div> */}
                     </Grid>
                   </Grid>
                 </MuiPickersUtilsProvider>
@@ -1091,6 +1251,81 @@ const AdressFormwithoutReactMemo = ({
                   />
                 </div>
               </Grid>
+
+              <Grid item style={{ width: "100%", marginTop: "8px" }}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      style={{ paddingLeft: "-12px" }}
+                    >
+                      <NumberOfPassengersIcon />
+                      <Typography style={{ color: "white", fontSize: "14px" }}>
+                        Safety Seat
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <AntSwitch
+                    color="primary"
+                    // disabled={disableHourly}
+                    checked={safetySeat}
+                    onClick={() => {
+                      // if (hourly == false) {
+                      //   // // setIsGateMeeting(true)
+                      //   // setGateMeetingRedux(true)
+                      //   setHourly(true)
+                      //   // hourly = true
+                      //   console.log("true")
+                      //   console.log(hourly)
+                      // } else {
+                      //   // setIsGateMeeting(false)
+                      //   // setGateMeetingRedux(false)
+                      //   setHourly(true)
+                      //   // hourly = false
+                      //   console.log("false")
+                      //   console.log(hourly)
+                      // }
+                      if (!hourlyAndSeatsRedux) {
+                        // setIsGateMeeting(true)
+                        setHourlyRedux(true)
+                        // console.log("true")
+                      } else {
+                        // setIsGateMeeting(false)
+                        setHourlyRedux(false)
+                        // console.log("false")
+                      }
+                      setSafetySeat(!safetySeat)
+
+                      // setHourlyRedux()
+                      // hourly ? setBookingType(2) : setBookingType(1)
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item style={{ width: "100%" }}>
+                {safetySeat === true && (
+                  <Grid item>
+                    <SafetySeat
+                      setBoosterSeat={setBoosterSeat}
+                      setChildSafetySeat={setChildSafetySeat}
+                      boosterSeat={boosterSeat}
+                      childSafetySeat={childSafetySeat}
+                      // hoursState={formData.hours}
+                      // hourly={hourly}
+                      // hoursAddressForm={hoursAddressForm}
+                      // setHoursAddressForm={setHoursAddressForm}
+                    />
+                  </Grid>
+                )}
+              </Grid>
+
               <Grid item style={{ width: "100%" }}>
                 <Grid
                   container
@@ -1131,7 +1366,7 @@ const AdressFormwithoutReactMemo = ({
                       //   console.log("false")
                       //   console.log(hourly)
                       // }
-                      if (!hourlyRedux) {
+                      if (!hourlyAndSeatsRedux) {
                         // setIsGateMeeting(true)
                         setHourlyRedux(true)
                         // console.log("true")
@@ -1160,6 +1395,7 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 )}
               </Grid>
+
               <Grid item>
                 <Grid item>
                   <Typography
@@ -1336,7 +1572,7 @@ const mapStateToProps = (state) => {
     formData: state.formData,
     resetInputs: state.resetWidgetInputs.resetInputs,
     gateMeeting: state.gateMeeting.isGateMeeting,
-    hourlyRedux: state.hourlyRedux.hourlyRedux,
+    hourlyAndSeatsRedux: state.hourlyAndSeatsRedux.hourlyRedux,
   }
 }
 
@@ -1346,4 +1582,6 @@ export default connect(mapStateToProps, {
   setFormData,
   setHourlyRedux,
   setGateMeetingRedux,
+  setSafetySeatCount,
+  setBoosterSeatCount,
 })(AdressForm)

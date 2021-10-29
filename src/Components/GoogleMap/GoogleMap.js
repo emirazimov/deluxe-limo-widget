@@ -160,8 +160,8 @@ const GoogleMap = React.memo(
       }
       const [markers, setMarkers] = useState([])
       const [mapCenter, setMapCenter] = useState({
-        lat: 21.315603,
-        lng: -157.858093,
+        lat: 37.773972,
+        lng: -122.431297,
       })
 
       const setUseHookState = (value, id) => {
@@ -273,6 +273,7 @@ const GoogleMap = React.memo(
                   lng: mapCenter.lng,
                 }}
                 styles={MapStyles}
+                zoom={12}
               >
                 {markers.map((marker, id) => (
                   <Marker

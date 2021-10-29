@@ -6,9 +6,9 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import { CloseWidgetIcon } from "../../assets/icons"
 import Divider from "@material-ui/core/Divider"
-import { isMobile } from "react-device-detect"
+// import { isMobile } from "react-device-detect"
 import { Preloader } from "../Helpers/Preloader"
-import AppBar from "@material-ui/core/AppBar"
+// import AppBar from "@material-ui/core/AppBar"
 import { useMediaQuery } from "@material-ui/core"
 import {
   setResetWidgetInputs,
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
       height: "28px",
       paddingTop: "7px",
       borderRadius: "20px",
-      background: "#C6AD99",
+      background: "#4F4F4F",
       marginRight: "10px",
       transition: "0.2s",
     },

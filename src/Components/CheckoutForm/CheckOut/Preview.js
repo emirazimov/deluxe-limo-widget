@@ -97,7 +97,7 @@ const Preview = ({
   back,
   setNoteRedux,
   setOrderSum,
-  hourlyRedux,
+  hourlyAndSeatsRedux,
   gateMeeting,
 }) => {
   const classes = useStyles()
@@ -144,7 +144,7 @@ const Preview = ({
     const h = +"1".padEnd(dp + 1, "0") // 10 or 100 or 1000 or etc
     return Math.round(n * h) / h
   }
-  console.log(hourlyRedux)
+  // console.log(hourlyAndSeatsRedux)
   const isMobile = useMediaQuery("(max-width:500px)")
 
   return (
@@ -828,7 +828,7 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
-          {hourlyRedux && (
+          {hourlyAndSeatsRedux && (
             <Grid item>
               <Grid
                 container
@@ -1010,7 +1010,7 @@ const mapStateToProps = (state) => {
     cars: state.cars.cars,
     formData: state.formData,
     carId: state.formData.carInfo.id,
-    hourlyRedux: state.hourlyRedux.hourlyRedux,
+    hourlyAndSeatsRedux: state.hourlyAndSeatsRedux.hourlyRedux,
     gateMeeting: state.gateMeeting.isGateMeeting,
   }
 }
