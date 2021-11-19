@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import React from "react"
 import { useFormContext } from "react-hook-form"
+import { connect } from "react-redux"
 import {
   MinusIcon,
   // NumberOfPassengers,
@@ -11,26 +12,38 @@ import {
 } from "../../../assets/icons"
 import "./index.css"
 
-export default React.memo(function PassengerQuantity({
+function PassengerQuantity({
   passengersqState,
   setPassengers,
   passengers,
+  passengersQuantityForBackStep,
+  setPassengersQuantityForBackStep,
+  formData,
 }) {
   const { register } = useFormContext()
 
   const onDecrease = () => {
-    if (passengers === 0) {
-      return
+    if (!isNaN(passengersQuantityForBackStep)) {
+      if (passengersQuantityForBackStep === 0) {
+        return
+      }
+      let progress = passengersQuantityForBackStep - 1
+      setPassengers((passengers) => passengers - 1)
+      setPassengersQuantityForBackStep(progress)
     }
-    setPassengers((passengers) => passengers - 1)
   }
-  const onIncrease = () => {
-    if (passengers === 14) {
-      return
+  const onIncrease = (e) => {
+    if (!isNaN(passengersQuantityForBackStep)) {
+      if (passengersQuantityForBackStep === 14) {
+        return
+      }
+      let progress = passengersQuantityForBackStep + 1
+      setPassengers((passengers) => passengers + 1)
+      setPassengersQuantityForBackStep(progress)
     }
-    setPassengers((passengers) => passengers + 1)
   }
-
+  console.log(passengersQuantityForBackStep)
+  // console.log(passengersQuantityForBackStep)
   //   React.useEffect(() => {
   //     setPassengers(parseInt(passengersqState))
   //   }, [passengersqState])
@@ -84,9 +97,14 @@ export default React.memo(function PassengerQuantity({
               name="passengersQuantity"
               onChange={(e) => {
                 setPassengers(e.target.value)
+                setPassengersQuantityForBackStep(e.target.value)
               }}
               className="passenger"
-              value={passengers}
+              value={
+                !passengersQuantityForBackStep
+                  ? formData.passengersQuantityForBackStep
+                  : passengersQuantityForBackStep
+              }
               size="1"
               style={{
                 // pointerEvents: "none",
@@ -115,4 +133,14 @@ export default React.memo(function PassengerQuantity({
       </Grid>
     </Grid>
   )
-})
+}
+
+const PassengerQuantityWithMemo = React.memo(PassengerQuantity)
+
+const mapStateToProps = (state) => {
+  return {
+    formData: state.formData,
+  }
+}
+
+export default connect(mapStateToProps)(PassengerQuantityWithMemo)

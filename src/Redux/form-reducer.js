@@ -10,13 +10,27 @@ const SET_ORDER_SUM = "./form-reducer/SET_ORDER_SUM"
 const SET_PAYMENT_FORM = "./form-reducer/SET_PAYMENT_FORM"
 const SET_SAFETY_SEAT_COUNT = "./form-reducer/SET_SAFETY_SEAT_COUNT"
 const SET_BOOSTER_SEAT_COUNT = "./form-reducer/SET_SAFETY_SEAT_COUNT"
+const SET_DATE_DEFAULT_VALUE = "./form-reducer/SET_DATE_DEFAULT_VALUE"
+const SET_TIME_DEFAULT_VALUE = "./form-reducer/SET_TIME_DEFAULT_VALUE"
+const SET_TIME_DEFAULT_VALUE_AMPM = "./form-reducer/SET_TIME_DEFAULT_VALUE_AMPM"
+const SET_TIME_DEFAULT_VALUE_ALIGNMENT =
+  "./form-reducer/SET_TIME_DEFAULT_VALUE_ALIGNMENT"
+const SET_PASSENGERS_QUANTITY_FOR_BACKSTEP =
+  "./form-reducer/SET_PASSENGERS_QUANTITY_FOR_BACKSTEP"
 
 let initialState = {
   orderType: 3,
   bookingType: 0,
   orderSum: 0,
   orderStartDateTime: "",
+  dateForDefaultValue: "",
+  timeForDefaultValue: "",
+  timeForDefaultValueAMPMalignment: {
+    ampm: "",
+    alignment: "web",
+  },
   passengersQuantity: 0,
+  passengersQuantityForBackStep: 0,
   carInfo: {
     id: 0,
   },
@@ -177,6 +191,33 @@ const formReducer = (state = initialState, action) => {
         ...state,
         boosterSeatCount: action.payload,
       }
+
+    case SET_DATE_DEFAULT_VALUE:
+      return {
+        ...state,
+        dateForDefaultValue: action.payload,
+      }
+    case SET_TIME_DEFAULT_VALUE:
+      return {
+        ...state,
+        timeForDefaultValue: action.payload,
+      }
+    case SET_TIME_DEFAULT_VALUE_AMPM:
+      return {
+        ...state,
+        timeForDefaultValueAMPM: { ampm: action.payload },
+      }
+    case SET_TIME_DEFAULT_VALUE_ALIGNMENT:
+      return {
+        ...state,
+        timeForDefaultValueAMPM: { alignment: action.payload },
+      }
+    case SET_PASSENGERS_QUANTITY_FOR_BACKSTEP:
+      return {
+        ...state,
+        passengersQuantityForBackStep: action.payload,
+      }
+
     default:
       return state
   }
@@ -191,6 +232,30 @@ export const setNoteRedux = (note) => ({ type: SET_NOTE, note })
 export const setCarId = (id) => ({ type: SET_CAR_ID, id })
 
 export const setOrderSum = (sum) => ({ type: SET_ORDER_SUM, sum })
+
+export const setDateForDefaultValue = (date) => ({
+  type: SET_DATE_DEFAULT_VALUE,
+  payload: date,
+})
+
+export const setTimeForDefaultValue = (time) => ({
+  type: SET_TIME_DEFAULT_VALUE,
+  payload: time,
+})
+
+export const setTimeForDefaultValueAMPM = (ampm) => ({
+  type: SET_TIME_DEFAULT_VALUE_AMPM,
+  payload: ampm,
+})
+export const setTimeForDefaultValueAlignment = (alignment) => ({
+  type: SET_TIME_DEFAULT_VALUE_ALIGNMENT,
+  payload: alignment,
+})
+
+export const setPassengersQuantityForBackStep = (quantity) => ({
+  type: SET_PASSENGERS_QUANTITY_FOR_BACKSTEP,
+  payload: quantity,
+})
 
 export const setPaymentForm = (form, cityId, stateId, date) => ({
   type: SET_PAYMENT_FORM,

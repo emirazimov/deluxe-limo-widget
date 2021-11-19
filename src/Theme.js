@@ -99,6 +99,9 @@ export default createMuiTheme({
         borderColor: "#C19815",
       },
     },
+    MuiDialog: {
+      root: { zIndex: "1000000001 !important" },
+    },
   },
   shape: {
     borderRadius: "10px",

@@ -72,13 +72,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
-    {
-      zIndex: "1000000000000000000",
-    },
-  modalRoot: {
-    zIndex: "1000000000000000000",
-  },
+  // "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
+  //   {
+  //     zIndex: "1000000000000000000",
+  //   },
+  // modalRoot: {
+  //   zIndex: "1000000000000000000",
+  // },
 }))
 
 export const CustomFormInput = ({ defaultValue, name, required, ...props }) => {

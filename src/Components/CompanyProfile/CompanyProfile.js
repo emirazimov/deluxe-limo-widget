@@ -1,6 +1,9 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
-import { getCompanyProfile } from "../../Redux/company-profile-reducer"
+import {
+  getCompanyProfile,
+  setGotAddressError,
+} from "../../Redux/company-profile-reducer"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
@@ -14,6 +17,12 @@ import {
   setResetWidgetInputs,
   setResetWidgetInputsActionCreator,
 } from "../../Redux/reset-widget-inputs-reducer"
+import {
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAlignment,
+  setTimeForDefaultValueAMPM,
+} from "../../Redux/form-reducer"
 
 const useStyles = makeStyles((theme) => ({
   companyContainer: {
@@ -73,6 +82,11 @@ const CompanyProfile = ({
   setBackgroundScrollStop,
   resetInputs,
   setResetWidgetInputs,
+  setGotAddressError,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAlignment,
+  setTimeForDefaultValueAMPM,
 }) => {
   const classes = useStyles()
 
@@ -141,7 +155,12 @@ const CompanyProfile = ({
                   setExpanded()
                   setActiveStep(0)
                   setBackgroundScrollStop(false)
-                  setResetWidgetInputs()
+                  setResetWidgetInputs(true)
+                  setGotAddressError(false)
+                  setDateForDefaultValue("")
+                  setTimeForDefaultValue("")
+                  setTimeForDefaultValueAlignment("")
+                  setTimeForDefaultValueAMPM("")
                 }}
               >
                 <CloseWidgetIcon />
@@ -171,4 +190,9 @@ const mapDispatchToProps = {}
 export default connect(mapStateToProps, {
   getCompanyProfile,
   setResetWidgetInputs,
+  setGotAddressError,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAlignment,
+  setTimeForDefaultValueAMPM,
 })(CompanyProfile)

@@ -138,8 +138,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   option: {
+    fontSize: "14px",
     backgroundColor: "black",
-
     "&:hover": {
       backgroundColor: "#4F4F4F",
     },
@@ -547,6 +547,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                 options={states}
                 defaultValue={null}
                 autoComplete="off"
+                disablePortal
                 autoHighlight
                 className={classes.mainAutocompleteClass}
                 InputProps={{
@@ -605,6 +606,7 @@ const Payment = ({ next, back, total, formSummary, setPaymentForm }) => {
                     options={cities}
                     key={statesId}
                     autoComplete="off"
+                    disablePortal
                     defaultValue={null}
                     autoHighlight
                     getOptionLabel={(option) => option.name}

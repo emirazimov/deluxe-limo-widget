@@ -146,6 +146,19 @@ const Preview = ({
   }
   // console.log(hourlyAndSeatsRedux)
   const isMobile = useMediaQuery("(max-width:500px)")
+  console.log(formData)
+
+  const showCarAmount = () => {
+    if (selectedCar.boosterSeatPrice || selectedCar.safetySeatPrice) {
+      return `$${
+        selectedCar.price -
+        selectedCar.boosterSeatPrice -
+        selectedCar.safetySeatPrice
+      }`
+    } else {
+      return `$${selectedCar.price}`
+    }
+  }
 
   return (
     <>
@@ -545,9 +558,12 @@ const Preview = ({
                       >
                         {gateMeeting
                           ? `$${
-                              selectedCar.price - selectedCar.greetAndMeetPrice
+                              selectedCar.price -
+                              selectedCar.greetAndMeetPrice -
+                              selectedCar.boosterSeatPrice -
+                              selectedCar.safetySeatPrice
                             }`
-                          : `$${selectedCar.price}`}
+                          : showCarAmount()}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -828,6 +844,7 @@ const Preview = ({
               </Grid>
             </Grid>
           </Grid>
+
           {hourlyAndSeatsRedux && (
             <Grid item>
               <Grid
@@ -860,6 +877,142 @@ const Preview = ({
               </Grid>
             </Grid>
           )}
+          {selectedCar.boosterSeatPrice !== 0 &&
+          selectedCar.boosterSeatPrice !== undefined ? (
+            <Grid item>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    Youth Booster Seat
+                  </Typography>
+                </Grid>
+                <Grid item style={{ flexGrow: 1 }}>
+                  <Box
+                    style={{
+                      marginTop: "8px",
+                      backgroundColor: "transparent",
+                      marginLeft: "3px",
+                      marginRight: "3px",
+                      borderBottom: "2px dotted white",
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    {`$${selectedCar.boosterSeatPrice}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          ) : (
+            <>
+              {selectedCar.boosterSeatPrice == undefined ? null : (
+                <Grid item>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography style={{ color: "white", fontSize: "16px" }}>
+                        Youth Booster Seat
+                      </Typography>
+                    </Grid>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "8px",
+                          backgroundColor: "transparent",
+                          marginLeft: "3px",
+                          marginRight: "3px",
+                          borderBottom: "2px dotted white",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography style={{ color: "white", fontSize: "16px" }}>
+                        {`$${0}`}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )}
+            </>
+          )}
+          {selectedCar.safetySeatPrice !== 0 &&
+          selectedCar.safetySeatPrice !== undefined ? (
+            <Grid item>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    {"Infant & Child Safety Seat"}
+                  </Typography>
+                </Grid>
+                <Grid item style={{ flexGrow: 1 }}>
+                  <Box
+                    style={{
+                      marginTop: "8px",
+                      backgroundColor: "transparent",
+                      marginLeft: "3px",
+                      marginRight: "3px",
+                      borderBottom: "2px dotted white",
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography style={{ color: "white", fontSize: "16px" }}>
+                    {`$${selectedCar.safetySeatPrice}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          ) : (
+            <>
+              {selectedCar.safetySeatPrice == undefined ? null : (
+                <Grid item>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography style={{ color: "white", fontSize: "16px" }}>
+                        {"Infant & Child Safety Seat"}
+                      </Typography>
+                    </Grid>
+                    <Grid item style={{ flexGrow: 1 }}>
+                      <Box
+                        style={{
+                          marginTop: "8px",
+                          backgroundColor: "transparent",
+                          marginLeft: "3px",
+                          marginRight: "3px",
+                          borderBottom: "2px dotted white",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography style={{ color: "white", fontSize: "16px" }}>
+                        {`$${0}`}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )}
+            </>
+          )}
           {gateMeeting && (
             <Grid item>
               <Grid
@@ -870,7 +1023,7 @@ const Preview = ({
               >
                 <Grid item>
                   <Typography style={{ color: "white", fontSize: "16px" }}>
-                    {"Meet & Greet"}
+                    {"Meet & Greet/Luggage Assist"}
                   </Typography>
                 </Grid>
                 <Grid item style={{ flexGrow: 1 }}>
@@ -931,9 +1084,7 @@ const Preview = ({
                   }}
                 >
                   {/* {`$${selectedCar.price}`}{" "} */}
-                  {gateMeeting
-                    ? `$${round(selectedCar.price, 2)}`
-                    : `$${round(selectedCar.price, 2)}`}
+                  {`$${round(selectedCar.price, 2)}`}
                 </Typography>
               </Grid>
             </Grid>

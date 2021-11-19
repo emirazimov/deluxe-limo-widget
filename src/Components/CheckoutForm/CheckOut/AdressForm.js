@@ -6,7 +6,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { makeStyles } from "@material-ui/core/styles"
 import Switch from "@material-ui/core/Switch"
 import Typography from "@material-ui/core/Typography"
-// import { yupResolver } from "@hookform/resolvers/yup"
+// import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
@@ -20,9 +20,11 @@ import {
   // ForwardArrowIcon,
   HourlyIcon,
   LeftArrowForAdressForm,
+  MeetAndGreetIcon,
   NumberOfPassengersIcon,
   PlaneIcon,
   RightArrowForAdressForm,
+  SafetySeatIcon,
   Ticket,
 } from "../../../assets/icons"
 import { getCarsByType } from "../../../Redux/car-reducer"
@@ -45,6 +47,11 @@ import Carousel, { consts } from "react-elastic-carousel"
 // import Tooltip from "@material-ui/core/Tooltip"
 import {
   setBoosterSeatCount,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
   setFormData,
   setSafetySeatCount,
 } from "./../../../Redux/form-reducer"
@@ -197,6 +204,9 @@ const useStyles = makeStyles((theme) => ({
   noBorderRed: {
     borderRadius: "5px",
     border: "1px solid #db5858",
+    "&:hover": {
+      border: "1px solid white",
+    },
   },
   redBorderForAirlines: {
     border: "1px solid #db5858",
@@ -275,6 +285,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   option: {
+    fontSize: "15px",
     backgroundColor: "black",
     "&:hover": {
       backgroundColor: "#4F4F4F",
@@ -386,6 +397,11 @@ const AdressFormwithoutReactMemo = ({
   backgroundScrollStopForTimePicker,
   setBackgroundScrollStopForTimePicker,
   resetInputs,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
 }) => {
   const classes = useStyles()
   console.log("AdressFrom")
@@ -482,14 +498,21 @@ const AdressFormwithoutReactMemo = ({
         page: pageSize,
         typeId: carSelectionID,
         bookingType: bookingType,
-        passengersQuantity: passengers,
+        passengersQuantity: formData.passengersQuantityForBackStep,
         isAirportPickupIncluded: isAirportPickupIncludedLocalState,
         boosterSeatCount: boosterSeat,
+        safetySeatCount: childSafetySeat,
       })
       setSafetySeatCount(childSafetySeat)
       setBoosterSeatCount(boosterSeat)
-      console.log(childSafetySeat, boosterSeat)
-      const forRes = data.orderStartDate.toLocaleDateString("en-US")
+      setDateForDefaultValue(
+        new Date(data.orderStartDate).toLocaleDateString("en-US")
+      )
+      // setTimeForDefaultValue(time)
+      // setTimeForDefaultValueAMPM(AMPM)
+      // setTimeForDefaultValueAlignment(alignment)
+
+      const forRes = new Date(data.orderStartDate).toLocaleDateString("en-US")
       const forRes2 = time + ` ${AMPM}`
 
       // ._d.toLocaleTimeString("en-US", {
@@ -561,28 +584,20 @@ const AdressFormwithoutReactMemo = ({
     //   }
     // }
   }
-
   const onSubmit2 = (data) => {
-    console.log(
-      firstTimeHalf?.[0],
-      firstTimeHalf?.[1],
-      secondTimeHalf?.[0],
-      secondTimeHalf?.[1]
-    )
-    console.log(time)
     if (
       destinations[0].rideCheckPoint &&
       destinations[1].rideCheckPoint &&
       data.orderStartDate &&
-      time &&
-      firstTimeHalf?.[0] >= "0" &&
-      firstTimeHalf?.[1] >= "0" &&
-      secondTimeHalf?.[0] >= "0" &&
-      secondTimeHalf?.[1] >= "0" &&
+      (time || formData.timeForDefaultValue) &&
+      (firstTimeHalf?.[0] >= "0" || formData.timeForDefaultValue) &&
+      (firstTimeHalf?.[1] >= "0" || formData.timeForDefaultValue) &&
+      (secondTimeHalf?.[0] >= "0" || formData.timeForDefaultValue) &&
+      (secondTimeHalf?.[1] >= "0" || formData.timeForDefaultValue) &&
       // false &&
       carSelectionID &&
-      passengers &&
-      AMPM
+      (passengers || formData.passengersQuantityForBackStep) &&
+      (AMPM || formData?.timeForDefaultValueAMPM?.ampm)
     ) {
       if (isAirline) {
         if (!airlineId) {
@@ -605,7 +620,10 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmit2(false)
       }
-      if (!data.orderStartDate?.toLocaleDateString("en-GB")) {
+      if (
+        !data?.orderStartDate ||
+        (!formData?.dateForDefaultValue && formData?.dateForDefaultValue)
+      ) {
         setRedBorderOnSubmitForDate(true)
       } else {
         setRedBorderOnSubmitForDate(false)
@@ -616,46 +634,53 @@ const AdressFormwithoutReactMemo = ({
       //   setRedBorderOnSubmitForTime(false)
       // }
       if (
-        firstTimeHalf?.[0] <= "0" ||
-        firstTimeHalf?.[0] <= "" ||
-        firstTimeHalf?.[0] == undefined
+        (firstTimeHalf?.[0] <= "0" && firstTimeHalfRedux?.[0] <= "0") ||
+        (firstTimeHalf?.[0] <= "" && firstTimeHalfRedux?.[0] <= "0") ||
+        (firstTimeHalf?.[0] == undefined &&
+          firstTimeHalfRedux?.[0] <= undefined)
       ) {
         setRedBorderOnSubmitForTime2(true)
       } else {
         setRedBorderOnSubmitForTime2(false)
       }
       if (
-        firstTimeHalf?.[1] <= "0" ||
-        firstTimeHalf?.[1] <= "" ||
-        firstTimeHalf?.[1] == undefined
+        (firstTimeHalf?.[1] <= "0" && firstTimeHalfRedux?.[1] <= "0") ||
+        (firstTimeHalf?.[1] <= "" && firstTimeHalfRedux?.[1] <= "") ||
+        (firstTimeHalf?.[1] == undefined &&
+          firstTimeHalfRedux?.[1] <= undefined)
       ) {
         setRedBorderOnSubmitForTime6(true)
       } else {
         setRedBorderOnSubmitForTime6(false)
       }
-      if (secondTimeHalf2 <= "0" || secondTimeHalf2 <= "") {
+      if (
+        (secondTimeHalf2 <= "0" && secondTimeHalfRedux2 <= "0") ||
+        (secondTimeHalf2 <= "" && secondTimeHalfRedux2 <= "")
+      ) {
         setRedBorderOnSubmitForTime3(true)
       } else {
         setRedBorderOnSubmitForTime3(false)
       }
 
-      if (secondTimeHalf?.[0] <= "0" || secondTimeHalf?.[0] <= "") {
+      if (
+        (secondTimeHalf?.[0] <= "0" && secondTimeHalfRedux?.[0] <= "0") ||
+        (secondTimeHalf?.[0] <= "" && secondTimeHalfRedux?.[0] <= "")
+      ) {
         setRedBorderOnSubmitForTime4(true)
       } else {
         setRedBorderOnSubmitForTime4(false)
       }
       if (
-        secondTimeHalf?.[1] <= "0" ||
-        secondTimeHalf?.[1] <= "" ||
-        secondTimeHalf?.[1] == undefined
+        (secondTimeHalf?.[1] <= "0" && secondTimeHalfRedux?.[1] <= "0") ||
+        (secondTimeHalf?.[1] <= "" && secondTimeHalfRedux?.[1] <= "") ||
+        (secondTimeHalf?.[1] == undefined &&
+          secondTimeHalfRedux?.[1] <= undefined)
       ) {
         setRedBorderOnSubmitForTime5(true)
-        console.log(secondTimeHalf?.[1] + "true")
       } else {
         setRedBorderOnSubmitForTime5(false)
-        console.log(secondTimeHalf?.[1] + "false")
       }
-      if (!AMPM) {
+      if (!AMPM && !formData?.timeForDefaultValueAMPM?.ampm) {
         setRedBorderOnSubmitForTime(true)
       } else {
         setRedBorderOnSubmitForTime(false)
@@ -665,7 +690,7 @@ const AdressFormwithoutReactMemo = ({
       } else {
         setRedBorderOnSubmitForCarType(true)
       }
-      if (passengers) {
+      if (formData.passengersQuantityForBackStep) {
         setRedBorderOnSubmitForPassengers(false)
       } else {
         setRedBorderOnSubmitForPassengers(true)
@@ -749,8 +774,10 @@ const AdressFormwithoutReactMemo = ({
   const handleChangeAMPM = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment)
+      setTimeForDefaultValueAlignment(newAlignment)
     }
     setAMPM(event.target.textContent)
+    setTimeForDefaultValueAMPM(event.target.textContent)
     // console.log(event.target.textContent)
   }
   const [triggerToTimePicker, setTriggerToTimePicker] = useState(false)
@@ -774,6 +801,7 @@ const AdressFormwithoutReactMemo = ({
     if (event.target.value == "1_:__") {
       setTimeMask(false)
     }
+    setTimeForDefaultValue(event.target.value)
     setTime(event.target.value)
     // const emir = "00:10"
     // console.log(event.target.value)
@@ -796,6 +824,20 @@ const AdressFormwithoutReactMemo = ({
     ?.join()
     ?.split("")
   var secondTimeHalf2 = time.substr(time.indexOf(":")).match(/\d+/)
+
+  var firstTimeHalfRedux = formData?.timeForDefaultValue
+    ?.substr(0, formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalfRedux = formData?.timeForDefaultValue
+    ?.substr(formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
+    ?.join()
+    ?.split("")
+  var secondTimeHalfRedux2 = formData?.timeForDefaultValue
+    ?.substr(formData?.timeForDefaultValue?.indexOf(":"))
+    ?.match(/\d+/)
 
   const mask = [
     /[0-2]/,
@@ -843,169 +885,129 @@ const AdressFormwithoutReactMemo = ({
               spacing={2}
               className={classes.contentContainer}
             >
-              {isAirline && bookingType === 3 && (
-                <Grid
-                  className={
-                    redBorderOnAirlines
-                      ? classes.redBorderForAirlines
-                      : classes.redBorderForAirlinesDefault
-                  }
-                  style={{
-                    marginLeft: "8px",
-                    marginRight: "8px",
-                    marginTop: "6px",
-                    marginBottom: "5px",
-                  }}
-                >
-                  <Grid item>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      options={airlines}
-                      defaultValue={null}
-                      autoHighlight
-                      getOptionLabel={(option) => option.name}
-                      classes={{
-                        popupIndicator: classes.popupIndicator,
-                        option: classes.option,
-                        paper: classes.selectedOption,
-                      }}
-                      renderOption={(option) => (
-                        <>
-                          <span>{option.code}</span>
-                          {option.name} ({option.code})
-                        </>
-                      )}
-                      renderInput={(params) => {
-                        params.InputProps.startAdornment = (
-                          <InputAdornment position="start">
-                            <PlaneIcon />
-                          </InputAdornment>
-                        )
-                        return (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            placeholder="Airlines"
-                            className={classes.airLinesInput}
+              {(isAirline || formData.isAirportPickupIncluded) &&
+                (formData.bookingType === 3 || bookingType === 3) && (
+                  <Grid
+                    className={
+                      redBorderOnAirlines
+                        ? classes.redBorderForAirlines
+                        : classes.redBorderForAirlinesDefault
+                    }
+                    style={{
+                      marginLeft: "8px",
+                      marginRight: "8px",
+                      marginTop: "6px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    <Grid item>
+                      <Autocomplete
+                        id="combo-box-demo"
+                        options={airlines}
+                        defaultValue={null}
+                        autoHighlight
+                        disablePortal
+                        getOptionLabel={(option) => option.name}
+                        classes={{
+                          popupIndicator: classes.popupIndicator,
+                          option: classes.option,
+                          paper: classes.selectedOption,
+                        }}
+                        renderOption={(option) => (
+                          <>
+                            <span>{option.code}</span>
+                            {option.name} ({option.code})
+                          </>
+                        )}
+                        renderInput={(params) => {
+                          params.InputProps.startAdornment = (
+                            <InputAdornment position="start">
+                              <PlaneIcon />
+                            </InputAdornment>
+                          )
+                          return (
+                            <TextField
+                              {...params}
+                              fullWidth
+                              placeholder="Airlines"
+                              className={classes.airLinesInput}
+                              style={{
+                                height: "40px",
+
+                                backgroundColor: "#282828",
+                                boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
+                                paddingLeft: "10px",
+                                paddingRight: "10px",
+                                borderRadius: "5px",
+                              }}
+                              InputProps={{
+                                ...params.InputProps,
+                                classes: {
+                                  root: classes.inputDateTime,
+                                  input: classes.input, // class name, e.g. `classes-nesting-root-x`
+                                  notchedOutline: classes.noBorder,
+                                },
+                                disableUnderline: true,
+                              }}
+                            />
+                          )
+                        }}
+                        onChange={(event, newValue) => {
+                          newValue
+                            ? setAirlineId(newValue.id)
+                            : setAirlineId(null)
+                        }}
+                        name="airlines"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      style={{ marginTop: "17px", marginBottom: "4px" }}
+                    >
+                      <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                      >
+                        <Grid item style={{ width: "100%" }}>
+                          <CustomFormInput
+                            name="flightNumber"
+                            variant="outlined"
+                            placeholder="Flight number"
+                            className={classes.flightNumberInput}
                             style={{
                               height: "40px",
-
+                              // border: "none",
                               backgroundColor: "#282828",
                               boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
-                              paddingLeft: "10px",
-                              paddingRight: "10px",
+                              width: "100%",
+                              marginBottom: "0px",
+                              marginTop: "0px",
                               borderRadius: "5px",
                             }}
+                            defaultValue={null}
+                            value={flightNumber}
+                            onChange={(e) => setFlightNumber(e.target.value)}
+                            inputProps={{ style: inputStyle }}
                             InputProps={{
-                              ...params.InputProps,
                               classes: {
                                 root: classes.inputDateTime,
                                 input: classes.input, // class name, e.g. `classes-nesting-root-x`
                                 notchedOutline: classes.noBorder,
                               },
-                              disableUnderline: true,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Ticket />
+                                </InputAdornment>
+                              ),
                             }}
                           />
-                        )
-                      }}
-                      onChange={(event, newValue) => {
-                        newValue
-                          ? setAirlineId(newValue.id)
-                          : setAirlineId(null)
-                      }}
-                      name="airlines"
-                    />
-                  </Grid>
-                  <Grid item style={{ marginTop: "12px" }}>
-                    <Grid
-                      container
-                      direction="row"
-                      justify="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item style={{ width: "50%" }}>
-                        <CustomFormInput
-                          name="flightNumber"
-                          variant="outlined"
-                          placeholder="Flight number"
-                          className={classes.flightNumberInput}
-                          style={{
-                            height: "40px",
-                            // border: "none",
-                            backgroundColor: "#282828",
-                            boxShadow: "0px 5px 30px rgba(0, 0, 0, 0.1)",
-                            width: "94%",
-                            marginBottom: "0px",
-                            marginTop: "0px",
-                            borderRadius: "5px",
-                          }}
-                          defaultValue={null}
-                          value={flightNumber}
-                          onChange={(e) => setFlightNumber(e.target.value)}
-                          inputProps={{ style: inputStyle }}
-                          InputProps={{
-                            classes: {
-                              root: classes.inputDateTime,
-                              input: classes.input, // class name, e.g. `classes-nesting-root-x`
-                              notchedOutline: classes.noBorder,
-                            },
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <Ticket />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                      <Grid item style={{ width: "43%" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justify="space-between"
-                        >
-                          <Grid item>
-                            <Typography
-                              style={{ color: "white", fontSize: "15px" }}
-                            >
-                              {"Meet & Greet"}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <AntSwitch
-                              onClick={() => {
-                                if (gateMeeting == false) {
-                                  // setIsGateMeeting(true)
-                                  setGateMeetingRedux(true)
-                                  setIsGateMeeting(true)
-                                  setIsAirportPickupIncludedLocalState(true)
-                                  console.log("true")
-                                } else {
-                                  // setIsGateMeeting(false)
-                                  setGateMeetingRedux(false)
-                                  setIsGateMeeting(false)
-                                  setIsAirportPickupIncludedLocalState(false)
-                                  console.log("false")
-                                }
-                                // setIsGateMeeting(!isGateMeeting)
-                                // setTimeout(() => {
-                                //   console.log(isGateMeeting)
-                                //   if (isGateMeeting == true) {
-                                //     setGateMeetingRedux(true)
-                                //   } else {
-                                //     setGateMeetingRedux(false)
-                                //   }
-                                // }, 1500)
-                              }}
-                              color="primary"
-                            />
-                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              )}
+                )}
               <Grid item style={{ width: "100%" }}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid
@@ -1034,13 +1036,17 @@ const AdressFormwithoutReactMemo = ({
                           paddingLeft: "15px",
                           boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
                           borderRadius: "5px",
-                          "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
-                            {
-                              zIndex: "1000000000000000000",
-                            },
+                          // "&.MuiDialog-paper .MuiPickersModal-dialogRoot .MuiDialog-paperScrollPaper .MuiDialog-paperWidthSm .MuiPaper-elevation24 .MuiPaper-rounded":
+                          //   {
+                          //     zIndex: "1000000000000000000",
+                          //   },
                         }}
                         placeholder="Pick up Date"
-                        defaultValue={null}
+                        defaultValue={
+                          formData.dateForDefaultValue && !resetInputs
+                            ? formData.dateForDefaultValue
+                            : null
+                        }
                         disablePast
                         fullWidth
                         // onChange={(event, x) => {
@@ -1098,6 +1104,9 @@ const AdressFormwithoutReactMemo = ({
                         onChange={(e) => handleInput(e)}
                         // onChange={(e) => console.log("EMIR")}
                         // value={time}
+                        value={
+                          !resetInputs ? formData.timeForDefaultValue : null
+                        }
                       >
                         {(inputProps) => {
                           return (
@@ -1138,7 +1147,14 @@ const AdressFormwithoutReactMemo = ({
                                   <>
                                     <ToggleButtonGroup
                                       color="primary"
-                                      value={alignment}
+                                      value={
+                                        formData.timeForDefaultValueAMPM
+                                          ?.alignment ||
+                                        formData.timeForDefaultValueAMPM?.ampm
+                                          ? formData.timeForDefaultValueAMPM
+                                              ?.ampm
+                                          : alignment
+                                      }
                                       exclusive
                                       onChange={handleChangeAMPM}
                                       style={{
@@ -1248,11 +1264,84 @@ const AdressFormwithoutReactMemo = ({
                     passengersqState={formData.passengersQuantity}
                     setPassengers={setPassengers}
                     passengers={passengers}
+                    setPassengersQuantityForBackStep={
+                      setPassengersQuantityForBackStep
+                    }
+                    passengersQuantityForBackStep={
+                      formData.passengersQuantityForBackStep
+                    }
+                    resetInputs={resetInputs}
                   />
                 </div>
               </Grid>
-
-              <Grid item style={{ width: "100%", marginTop: "8px" }}>
+              {(isAirline || formData.isAirportPickupIncluded) &&
+                (formData.bookingType === 3 || bookingType === 3) && (
+                  <Grid
+                    item
+                    style={{
+                      width: "100%",
+                      marginTop: "8px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      justify="space-between"
+                    >
+                      <Grid>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          style={{ paddingLeft: "8px" }}
+                        >
+                          <MeetAndGreetIcon />
+                          <Typography
+                            style={{
+                              color: "white",
+                              fontSize: "15px",
+                              marginLeft: "7px",
+                            }}
+                          >
+                            {"Meet & Greet/Luggage Assist"}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid item>
+                        <AntSwitch
+                          onClick={() => {
+                            if (gateMeeting == false) {
+                              // setIsGateMeeting(true)
+                              setGateMeetingRedux(true)
+                              setIsGateMeeting(true)
+                              setIsAirportPickupIncludedLocalState(true)
+                              console.log("true")
+                            } else {
+                              // setIsGateMeeting(false)
+                              setGateMeetingRedux(false)
+                              setIsGateMeeting(false)
+                              setIsAirportPickupIncludedLocalState(false)
+                              console.log("false")
+                            }
+                            // setIsGateMeeting(!isGateMeeting)
+                            // setTimeout(() => {
+                            //   console.log(isGateMeeting)
+                            //   if (isGateMeeting == true) {
+                            //     setGateMeetingRedux(true)
+                            //   } else {
+                            //     setGateMeetingRedux(false)
+                            //   }
+                            // }, 1500)
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )}
+              <Grid item style={{ width: "100%", marginTop: "6px" }}>
                 <Grid
                   container
                   direction="row"
@@ -1264,10 +1353,16 @@ const AdressFormwithoutReactMemo = ({
                       container
                       direction="row"
                       alignItems="center"
-                      style={{ paddingLeft: "-12px" }}
+                      style={{ paddingLeft: "8px" }}
                     >
-                      <NumberOfPassengersIcon />
-                      <Typography style={{ color: "white", fontSize: "14px" }}>
+                      <SafetySeatIcon />
+                      <Typography
+                        style={{
+                          color: "white",
+                          fontSize: "14px",
+                          marginLeft: "9px",
+                        }}
+                      >
                         Safety Seat
                       </Typography>
                     </Grid>
@@ -1292,15 +1387,15 @@ const AdressFormwithoutReactMemo = ({
                       //   console.log("false")
                       //   console.log(hourly)
                       // }
-                      if (!hourlyAndSeatsRedux) {
-                        // setIsGateMeeting(true)
-                        setHourlyRedux(true)
-                        // console.log("true")
-                      } else {
-                        // setIsGateMeeting(false)
-                        setHourlyRedux(false)
-                        // console.log("false")
-                      }
+                      // if (!hourlyAndSeatsRedux) {
+                      //   // setIsGateMeeting(true)
+                      //   setHourlyRedux(true)
+                      //   // console.log("true")
+                      // } else {
+                      //   // setIsGateMeeting(false)
+                      //   setHourlyRedux(false)
+                      //   // console.log("false")
+                      // }
                       setSafetySeat(!safetySeat)
 
                       // setHourlyRedux()
@@ -1325,7 +1420,6 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 )}
               </Grid>
-
               <Grid item style={{ width: "100%" }}>
                 <Grid
                   container
@@ -1395,7 +1489,6 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 )}
               </Grid>
-
               <Grid item>
                 <Grid item>
                   <Typography
@@ -1584,4 +1677,9 @@ export default connect(mapStateToProps, {
   setGateMeetingRedux,
   setSafetySeatCount,
   setBoosterSeatCount,
+  setDateForDefaultValue,
+  setTimeForDefaultValue,
+  setTimeForDefaultValueAMPM,
+  setTimeForDefaultValueAlignment,
+  setPassengersQuantityForBackStep,
 })(AdressForm)

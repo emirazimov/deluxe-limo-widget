@@ -75,6 +75,21 @@ const useStyles = makeStyles((theme) => ({
     background: "black",
     zIndex: "12",
   },
+  destinationContainerred: {
+    marginTop: "-24px",
+    // padding: theme.spacing(1),
+    paddingTop: "0px",
+    paddingLeft: "0px",
+    paddingRight: "0px",
+    padding: "0px",
+
+    background: "black",
+    zIndex: "12",
+    marginRight: "8px",
+    marginLeft: "8px",
+    // marginTop: "7px",
+    border: "1px solid #db5858",
+  },
   destinationText: {
     padding: theme.spacing(1),
   },
@@ -103,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
   },
   noBorderRed: {
-    paddingTop: "4px",
+    paddingTop: "0px",
     border: "1px solid #db5858",
   },
   input: {
@@ -148,6 +163,8 @@ const GoogleMap = React.memo(
       redBorderOnSubmit,
       redBorderOnSubmit2,
       resetInputs,
+      formData,
+      flagForGotAddressError,
       ...props
     }) => {
       const classes = useStyles(redBorderOnSubmit)
@@ -247,6 +264,12 @@ const GoogleMap = React.memo(
       React.useEffect(() => {}, [orderAddressDetails])
       React.useEffect(() => {
         // console.log(destinations[0]?.rideCheckPoint.includes("Airport"))
+        if (Boolean(formData.orderAddressDetails[0].rideCheckPoint)) {
+          setDestinations(formData.orderAddressDetails)
+        }
+        if (resetInputs) {
+          setDestinations(destinations)
+        }
       }, [])
 
       return (
@@ -285,7 +308,14 @@ const GoogleMap = React.memo(
               </Map>
               {/* </Grid> */}
             </Grid>
-            <Grid item className={classes.destinationContainer}>
+            <Grid
+              item
+              className={
+                flagForGotAddressError
+                  ? classes.destinationContainerred
+                  : classes.destinationContainer
+              }
+            >
               <Grid container direction="column">
                 {destinations.map((destination, id) => {
                   console.log(destinations)
@@ -295,7 +325,12 @@ const GoogleMap = React.memo(
 
                   return (
                     <PlacesAutocomplete
-                      value={nothing}
+                      value={
+                        formData.orderAddressDetails[id].rideCheckPoint &&
+                        !resetInputs
+                          ? formData.orderAddressDetails[id].rideCheckPoint
+                          : nothing
+                      }
                       onChange={(value) => handleChange(value, id)}
                       onSelect={(value) => {
                         handleSelect(value, id)
@@ -316,107 +351,104 @@ const GoogleMap = React.memo(
                         return (
                           <div>
                             <Grid item className={classes.destinationText}>
-                              <div
+                              {/* <div
                                 className={
                                   redBorderOnSubmit || redBorderOnSubmit2
                                     ? classes.noBorderRed
                                     : classes.noBorderDefault
                                 }
-                              >
-                                <TextField
-                                  position="start"
-                                  style={{
-                                    height: "40px",
-                                    // border: "none",
+                              > */}
+                              <TextField
+                                position="start"
+                                style={{
+                                  height: "40px",
+                                  // border: "none",
 
-                                    // marginTop: "-4px",
-                                    boxShadow:
-                                      "4px 5px 30px rgba(0, 0, 0, 0.1)",
-                                  }}
-                                  variant="outlined"
-                                  name="rideCheckPoint"
-                                  defaultValue={destinations[id].rideCheckPoint}
-                                  fullWidth
-                                  // inputRef={ref}
-                                  InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment
-                                        style={{
-                                          marginRight: "10px",
-                                          // marginLeft: "15px",
-                                        }}
-                                      >
-                                        {id === 0 && <StartLocationIcon />}
-                                        {id === destinations.length - 1 && (
-                                          <EndLocationIcon />
-                                        )}
-                                        {id > 0 &&
-                                          id < destinations.length - 1 && (
-                                            <span
-                                              style={{
-                                                borderRadius: "50%",
-                                                width: "24px",
-                                                height: "25px",
-                                                backgroundColor: "transparent",
-                                                border: "2px solid #FFFFFF",
-                                                textAlign: "center",
-                                                fontFamily: "Roboto",
-                                                fontWeight: "700",
-                                                fontSize: "0.9rem",
-                                                paddingTop: "2px",
-                                                marginLeft: "-5px",
-                                                marginRight: "-5px",
-                                              }}
-                                            >
-                                              {id}
-                                            </span>
-                                          )}
-                                      </InputAdornment>
-                                    ),
-                                    endAdornment: (
-                                      <InputAdornment
-                                        style={{
-                                          cursor: "pointer",
-                                          // marginRight: "10px",
-                                        }}
-                                        position="end"
-                                      >
-                                        {id === destinations.length - 1 && (
-                                          <span
-                                            onClick={addEndPoint}
-                                            style={{
-                                              marginTop: "5px",
-                                            }}
-                                          >
-                                            <AddLocIcon />
-                                          </span>
-                                        )}
-                                        {id > 0 &&
-                                          id < destinations.length - 1 && (
-                                            <span
-                                              onClick={() => removeEndPoint(id)}
-                                              style={{ marginBottom: "6px" }}
-                                            >
-                                              <DeleteLocIcon />
-                                            </span>
-                                          )}
-                                      </InputAdornment>
-                                    ),
-                                    classes: {
-                                      root: classes.inputRoot,
-                                      notchedOutline:
-                                        redBorderOnSubmit || redBorderOnSubmit2
-                                          ? classes.noBorderRed
-                                          : classes.noBorderDefault,
-                                      input: classes.input,
-                                    },
-                                  }}
-                                  {...getInputProps({
-                                    placeholder: id === 0 ? "From" : "To",
-                                    className: "location-search-input",
-                                  })}
-                                />
-                              </div>
+                                  // marginTop: "-4px",
+                                  boxShadow: "4px 5px 30px rgba(0, 0, 0, 0.1)",
+                                }}
+                                variant="outlined"
+                                name="rideCheckPoint"
+                                defaultValue={destinations[id].rideCheckPoint}
+                                fullWidth
+                                // inputRef={ref}
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment
+                                      style={{
+                                        marginRight: "10px",
+                                        // marginLeft: "15px",
+                                      }}
+                                    >
+                                      {id === 0 && <StartLocationIcon />}
+                                      {id === destinations.length - 1 && (
+                                        <EndLocationIcon />
+                                      )}
+                                      {id > 0 && id < destinations.length - 1 && (
+                                        <span
+                                          style={{
+                                            borderRadius: "50%",
+                                            width: "24px",
+                                            height: "25px",
+                                            backgroundColor: "transparent",
+                                            border: "2px solid #FFFFFF",
+                                            textAlign: "center",
+                                            fontFamily: "Roboto",
+                                            fontWeight: "700",
+                                            fontSize: "0.9rem",
+                                            paddingTop: "2px",
+                                            marginLeft: "-5px",
+                                            marginRight: "-5px",
+                                          }}
+                                        >
+                                          {id}
+                                        </span>
+                                      )}
+                                    </InputAdornment>
+                                  ),
+                                  endAdornment: (
+                                    <InputAdornment
+                                      style={{
+                                        cursor: "pointer",
+                                        // marginRight: "10px",
+                                      }}
+                                      position="end"
+                                    >
+                                      {id === destinations.length - 1 && (
+                                        <span
+                                          onClick={addEndPoint}
+                                          style={{
+                                            marginTop: "5px",
+                                          }}
+                                        >
+                                          <AddLocIcon />
+                                        </span>
+                                      )}
+                                      {id > 0 && id < destinations.length - 1 && (
+                                        <span
+                                          onClick={() => removeEndPoint(id)}
+                                          style={{ marginBottom: "6px" }}
+                                        >
+                                          <DeleteLocIcon />
+                                        </span>
+                                      )}
+                                    </InputAdornment>
+                                  ),
+                                  classes: {
+                                    root: classes.inputRoot,
+                                    notchedOutline:
+                                      redBorderOnSubmit || redBorderOnSubmit2
+                                        ? classes.noBorderRed
+                                        : classes.noBorderDefault,
+                                    input: classes.input,
+                                  },
+                                }}
+                                {...getInputProps({
+                                  placeholder: id === 0 ? "From" : "To",
+                                  className: "location-search-input",
+                                })}
+                              />
+                              {/* </div> */}
                             </Grid>
                             <div className={classes.dropDown}>
                               {loading && (
@@ -495,7 +527,9 @@ const GoogleMap = React.memo(
 const mapStateToProps = (state) => {
   return {
     // profile: state.companyProfile.profile,
+    formData: state.formData,
     resetInputs: state.resetWidgetInputs.resetInputs,
+    flagForGotAddressError: state.companyProfile.gotAddressError,
   }
 }
 
