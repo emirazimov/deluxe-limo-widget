@@ -11,7 +11,10 @@ import Carousel from "react-material-ui-carousel"
 import { connect } from "react-redux"
 import { BackArrowIcon, ForwardArrowIcon } from "../../../assets/icons"
 import { Preloader } from "./../../Helpers/Preloader"
-import { setCarId } from "../../../Redux/form-reducer"
+import {
+  setCarId,
+  setIsAirportPickupIncluded,
+} from "../../../Redux/form-reducer"
 import { AppBar, useMediaQuery } from "@material-ui/core"
 import Box from "@material-ui/core/Box"
 import { AspectRatio } from "react-aspect-ratio"
@@ -145,6 +148,7 @@ const FleetForm = React.memo(
     error,
     setActiveStep,
     setResetWidgetInputs,
+    setIsAirportPickupIncluded,
   }) => {
     const classes = useStyles()
     const [carCard, setCarCard] = React.useState(0)
@@ -705,6 +709,7 @@ const FleetForm = React.memo(
                         back()
                         setGateMeetingRedux(false)
                         setResetWidgetInputs(false)
+                        setIsAirportPickupIncluded(false)
                       }}
                       startIcon={<BackArrowIcon />}
                       className={classes.backButtonSelf}
@@ -775,4 +780,5 @@ export default connect(mapStateToProps, {
   setCarId,
   setGateMeetingRedux,
   setResetWidgetInputs,
+  setIsAirportPickupIncluded,
 })(FleetForm)

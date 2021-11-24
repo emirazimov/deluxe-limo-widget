@@ -23,6 +23,7 @@ import {
   setTimeForDefaultValueAlignment,
   setTimeForDefaultValueAMPM,
 } from "../../Redux/form-reducer"
+import { setIsAirportPickupIncluded } from "../../Redux/form-reducer"
 
 const useStyles = makeStyles((theme) => ({
   companyContainer: {
@@ -87,6 +88,7 @@ const CompanyProfile = ({
   setTimeForDefaultValue,
   setTimeForDefaultValueAlignment,
   setTimeForDefaultValueAMPM,
+  setIsAirportPickupIncluded,
 }) => {
   const classes = useStyles()
 
@@ -161,6 +163,7 @@ const CompanyProfile = ({
                   setTimeForDefaultValue("")
                   setTimeForDefaultValueAlignment("")
                   setTimeForDefaultValueAMPM("")
+                  setIsAirportPickupIncluded(false)
                 }}
               >
                 <CloseWidgetIcon />
@@ -195,4 +198,5 @@ export default connect(mapStateToProps, {
   setTimeForDefaultValue,
   setTimeForDefaultValueAlignment,
   setTimeForDefaultValueAMPM,
+  setIsAirportPickupIncluded,
 })(CompanyProfile)

@@ -1341,6 +1341,72 @@ const AdressFormwithoutReactMemo = ({
                     </Grid>
                   </Grid>
                 )}
+              {destinations[1]?.rideCheckPoint.match(/(^|\W)Airport($|\W)/) && (
+                <Grid
+                  item
+                  style={{
+                    width: "100%",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="space-between"
+                  >
+                    <Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        style={{ paddingLeft: "8px" }}
+                      >
+                        <MeetAndGreetIcon />
+                        <Typography
+                          style={{
+                            color: "white",
+                            fontSize: "15px",
+                            marginLeft: "7px",
+                          }}
+                        >
+                          {"Meet & Greet/Luggage Assist"}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <AntSwitch
+                        onClick={() => {
+                          if (gateMeeting == false) {
+                            // setIsGateMeeting(true)
+                            setGateMeetingRedux(true)
+                            setIsGateMeeting(true)
+                            setIsAirportPickupIncludedLocalState(true)
+                            console.log("true")
+                          } else {
+                            // setIsGateMeeting(false)
+                            setGateMeetingRedux(false)
+                            setIsGateMeeting(false)
+                            setIsAirportPickupIncludedLocalState(false)
+                            console.log("false")
+                          }
+                          // setIsGateMeeting(!isGateMeeting)
+                          // setTimeout(() => {
+                          //   console.log(isGateMeeting)
+                          //   if (isGateMeeting == true) {
+                          //     setGateMeetingRedux(true)
+                          //   } else {
+                          //     setGateMeetingRedux(false)
+                          //   }
+                          // }, 1500)
+                        }}
+                        color="primary"
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )}
               <Grid item style={{ width: "100%", marginTop: "6px" }}>
                 <Grid
                   container

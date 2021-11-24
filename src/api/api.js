@@ -3,7 +3,7 @@ import * as axios from "axios"
 const jwtToken = localStorage.getItem("Authorization")
 
 const axiosInstance = axios.create({
-  baseURL: `https://apidev.bookinglane.com/api/`,
+  baseURL: `https://api.bookinglane.com/api/`,
   headers: {
     Authorization: "Bearer " + jwtToken,
     "App-Version": "1.2.01",
@@ -12,11 +12,11 @@ const axiosInstance = axios.create({
 
 export const authApi = {
   getToken() {
-    const company0Key = "bc5ebb93-db90-4341-a4de-169ad9f350d0"
+    const company0Key = "72bdcbaf-f52c-4df1-87b2-a7e54acd1842"
     return axios
       .post(
-        "https://apidev.bookinglane.com/api/companywidget/company-widget-auth",
-        { accessKey: "14862f6b-0e7a-47d0-810a-06a348fd9ec1" }
+        "https://api.bookinglane.com/api/companywidget/company-widget-auth",
+        { accessKey: "72bdcbaf-f52c-4df1-87b2-a7e54acd1842" }
       )
       .then((response) => {
         return response

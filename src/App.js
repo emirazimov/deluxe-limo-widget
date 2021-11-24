@@ -141,6 +141,15 @@ const App = (props) => {
     settingHeight()
     setHeightOfBookNow(refOfBookNow.current.clientHeight)
   }, [heightOfBookNow])
+  props.getCompanyToken()
+  React.useEffect(() => {
+    if (props.loading) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [props.loading])
+
   const handleDrag = (e, ui) => {
     position.current.x = ui.x
     position.current.y = ui.y
@@ -578,6 +587,7 @@ const mapStateToProps = (state) => {
     isFetching: state.cars.isFetching,
     companyName: state.companyProfile.profile.companyName,
     initializing: state.companyProfile.initializing,
+    loading: state.companyToken.loading,
   }
 }
 
