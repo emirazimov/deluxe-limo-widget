@@ -24,6 +24,7 @@ import {
   setTimeForDefaultValueAMPM,
 } from "../../Redux/form-reducer"
 import { setIsAirportPickupIncluded } from "../../Redux/form-reducer"
+import { setGateMeetingRedux } from "../../Redux/gate-meeting-reducer"
 
 const useStyles = makeStyles((theme) => ({
   companyContainer: {
@@ -89,6 +90,7 @@ const CompanyProfile = ({
   setTimeForDefaultValueAlignment,
   setTimeForDefaultValueAMPM,
   setIsAirportPickupIncluded,
+  setGateMeetingRedux,
 }) => {
   const classes = useStyles()
 
@@ -156,14 +158,15 @@ const CompanyProfile = ({
                 onClick={() => {
                   setExpanded()
                   setActiveStep(0)
-                  setBackgroundScrollStop(false)
-                  setResetWidgetInputs(true)
-                  setGotAddressError(false)
                   setDateForDefaultValue("")
                   setTimeForDefaultValue("")
                   setTimeForDefaultValueAlignment("")
                   setTimeForDefaultValueAMPM("")
+                  setBackgroundScrollStop(false)
+                  setResetWidgetInputs(true)
+                  setGotAddressError(false)
                   setIsAirportPickupIncluded(false)
+                  setGateMeetingRedux(false)
                 }}
               >
                 <CloseWidgetIcon />
@@ -199,4 +202,5 @@ export default connect(mapStateToProps, {
   setTimeForDefaultValueAlignment,
   setTimeForDefaultValueAMPM,
   setIsAirportPickupIncluded,
+  setGateMeetingRedux,
 })(CompanyProfile)

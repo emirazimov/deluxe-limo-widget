@@ -291,6 +291,7 @@ const App = (props) => {
                             setBackgroundScrollStopForTimePicker={
                               setBackgroundScrollStopForTimePicker
                             }
+                            setBackgroundScrollStop={setBackgroundScrollStop}
                           />
                         ) : null}
                       </Card>
@@ -373,6 +374,9 @@ const App = (props) => {
                                 setActiveStep={setActiveStep}
                                 nextStep={nextStep}
                                 backStep={backStep}
+                                setBackgroundScrollStop={
+                                  setBackgroundScrollStop
+                                }
                               />
                             ) : null}
                           </Card>
@@ -457,6 +461,9 @@ const App = (props) => {
                                 setActiveStep={setActiveStep}
                                 nextStep={nextStep}
                                 backStep={backStep}
+                                setBackgroundScrollStop={
+                                  setBackgroundScrollStop
+                                }
                               />
                             ) : null}
                           </Card>
@@ -562,6 +569,9 @@ const App = (props) => {
                                   setActiveStep={setActiveStep}
                                   nextStep={nextStep}
                                   backStep={backStep}
+                                  setBackgroundScrollStop={
+                                    setBackgroundScrollStop
+                                  }
                                 />
                               ) : null}
                             </Card>

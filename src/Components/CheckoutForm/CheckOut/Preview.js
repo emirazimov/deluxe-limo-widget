@@ -150,13 +150,14 @@ const Preview = ({
 
   const showCarAmount = () => {
     if (selectedCar.boosterSeatPrice || selectedCar.safetySeatPrice) {
-      return `$${
+      return `$${round(
         selectedCar.price -
-        selectedCar.boosterSeatPrice -
-        selectedCar.safetySeatPrice
-      }`
+          selectedCar.boosterSeatPrice -
+          selectedCar.safetySeatPrice,
+        2
+      )}`
     } else {
-      return `$${selectedCar.price}`
+      return `$${round(selectedCar.price, 2)} `
     }
   }
 
@@ -557,12 +558,13 @@ const Preview = ({
                         }}
                       >
                         {gateMeeting
-                          ? `$${
+                          ? `$${round(
                               selectedCar.price -
-                              selectedCar.greetAndMeetPrice -
-                              selectedCar.boosterSeatPrice -
-                              selectedCar.safetySeatPrice
-                            }`
+                                selectedCar.greetAndMeetPrice -
+                                selectedCar.boosterSeatPrice -
+                                selectedCar.safetySeatPrice,
+                              2
+                            )}`
                           : showCarAmount()}
                       </Typography>
                     </Grid>
@@ -1014,42 +1016,81 @@ const Preview = ({
             </>
           )}
           {gateMeeting && (
-            <Grid item>
-              <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Typography style={{ color: "white", fontSize: "16px" }}>
-                    {"Meet & Greet/Luggage Assist"}
-                  </Typography>
-                </Grid>
-                <Grid item style={{ flexGrow: 1 }}>
-                  <Box
-                    style={{
-                      marginTop: "8px",
-                      backgroundColor: "transparent",
-                      marginLeft: "3px",
-                      marginRight: "3px",
-                      borderBottom: "2px dotted white",
-                    }}
-                  />
-                </Grid>
-                <Grid item>
-                  <Typography
-                    style={{
-                      color: "white",
-                      fontSize: "16px",
-                      fontWeight: "700",
-                    }}
-                  >
-                    {`$${selectedCar.greetAndMeetPrice}`}
-                  </Typography>
+            <>
+              <Grid item>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography style={{ color: "white", fontSize: "16px" }}>
+                      {"Meet & Greet/Luggage Assist"}
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ flexGrow: 1 }}>
+                    <Box
+                      style={{
+                        marginTop: "8px",
+                        backgroundColor: "transparent",
+                        marginLeft: "3px",
+                        marginRight: "3px",
+                        borderBottom: "2px dotted white",
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {`$${selectedCar.greetAndMeetPrice}`}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+
+              <Grid item>
+                <Grid
+                  container
+                  direction="row"
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography style={{ color: "white", fontSize: "16px" }}>
+                      Luggage count
+                    </Typography>
+                  </Grid>
+                  <Grid item style={{ flexGrow: 1 }}>
+                    <Box
+                      style={{
+                        marginTop: "8px",
+                        backgroundColor: "transparent",
+                        marginLeft: "3px",
+                        marginRight: "3px",
+                        borderBottom: "2px dotted white",
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      style={{
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {formData.luggageCount}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </>
           )}
 
           <Grid item>

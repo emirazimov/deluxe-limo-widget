@@ -68,6 +68,7 @@ import { setGateMeetingRedux } from "../../../Redux/gate-meeting-reducer"
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab"
 import SafetySeat from "./SafetySeat"
 import ReactInputMask from "react-input-mask"
+import Luggage from "./Luggage"
 
 const useStyles = makeStyles((theme) => ({
   contentContainer: {
@@ -502,6 +503,7 @@ const AdressFormwithoutReactMemo = ({
         isAirportPickupIncluded: isAirportPickupIncludedLocalState,
         boosterSeatCount: boosterSeat,
         safetySeatCount: childSafetySeat,
+        luggageCount: luggage,
       })
       setSafetySeatCount(childSafetySeat)
       setBoosterSeatCount(boosterSeat)
@@ -796,10 +798,10 @@ const AdressFormwithoutReactMemo = ({
 
   const handleInput = (event) => {
     if (event.target.value == "0_:__") {
-      setTimeMask(true)
+      setTimeMask(false)
     }
     if (event.target.value == "1_:__") {
-      setTimeMask(false)
+      setTimeMask(true)
     }
     setTimeForDefaultValue(event.target.value)
     setTime(event.target.value)
@@ -812,6 +814,8 @@ const AdressFormwithoutReactMemo = ({
       event.target.value.substr(event.target.value.indexOf(":")).match(/\d+/)
     )
   }
+
+  const [luggage, setLuggage] = useState(0)
 
   var firstTimeHalf = time
     .substr(0, time.indexOf(":"))
@@ -851,7 +855,7 @@ const AdressFormwithoutReactMemo = ({
     7: "[0-1]",
     8: "[0-9]",
     9: "[0-5]",
-    1: timeMask ? "[0-9]" : "[0-2]",
+    1: !timeMask ? "[0-9]" : "[0-2]",
     a: "[A-Za-z]",
     "*": "[A-Za-z0-9]",
   }
@@ -1407,6 +1411,11 @@ const AdressFormwithoutReactMemo = ({
                   </Grid>
                 </Grid>
               )}
+
+              {isGateMeeting && (
+                <Luggage luggage={luggage} setLuggage={setLuggage} />
+              )}
+
               <Grid item style={{ width: "100%", marginTop: "6px" }}>
                 <Grid
                   container
