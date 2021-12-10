@@ -25,7 +25,7 @@ export const LuggageIcon = () => (
     viewBox="0 0 24 24"
     fill="transparent"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ marginLeft: "15px", marginRight: "10px" }}
+    style={{ marginLeft: "16px", marginRight: "10px" }}
   >
     <path
       d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"

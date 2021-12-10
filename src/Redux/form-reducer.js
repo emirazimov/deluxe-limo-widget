@@ -174,6 +174,7 @@ const formReducer = (state = initialState, action) => {
         greetClientInfo: { ...action.form.greetClientInfo },
         paymentInfo: {
           ...action.form.paymentInfo,
+          cardNumber: action.cardNumber,
           month: action.date[0],
           year: action.date[1],
         },
@@ -270,9 +271,10 @@ export const setIsAirportPickupIncluded = (flag) => ({
   payload: flag,
 })
 
-export const setPaymentForm = (form, cityId, stateId, date) => ({
+export const setPaymentForm = (form, cityId, stateId, date, cardNumber) => ({
   type: SET_PAYMENT_FORM,
   form,
+  cardNumber,
   cityId,
   stateId,
   date,

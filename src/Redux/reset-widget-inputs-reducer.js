@@ -1,10 +1,4 @@
 import { authApi } from "../api/api"
-import {
-  setDateForDefaultValue,
-  setTimeForDefaultValue,
-  setTimeForDefaultValueAlignment,
-  setTimeForDefaultValueAMPM,
-} from "./form-reducer"
 
 const SET_RESET_INPUTS = "/redux/companyTokenReducer/SET_RESET_INPUTS"
 
@@ -34,13 +28,6 @@ export const setResetWidgetInputs = (flag) => {
     dispatch(setResetWidgetInputsActionCreator(flag))
   }
 }
-
-// export const setAllSetsResetWidgetInputs = (flag) => {
-// dispatch(setDateForDefaultValue(""))
-// dispatch(setTimeForDefaultValue(""))
-// dispatch(setTimeForDefaultValueAlignment(""))
-// dispatch(setTimeForDefaultValueAMPM(""))
-// }
 
 // export const getCompanyToken = () => {
 //   return async (dispatch) => {
